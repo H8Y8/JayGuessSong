@@ -325,9 +325,9 @@ export default function PlayPage() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col p-4 max-w-2xl mx-auto">
+        <div className="min-h-screen flex flex-col p-3 max-w-2xl mx-auto">
             {/* Header */}
-            <header className="flex justify-between items-center py-4">
+            <header className="flex justify-between items-center py-2">
                 <div className="text-sm text-gray-400">
                     題目 {gameData.questionIndex + 1} / {gameData.totalQuestions}
                 </div>
@@ -337,7 +337,7 @@ export default function PlayPage() {
             </header>
 
             {/* Progress Bar */}
-            <div className="h-2 bg-gray-800 rounded-full overflow-hidden mb-6">
+            <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden mb-3">
                 <div
                     className="h-full bg-blue-500 transition-all duration-300"
                     style={{ width: `${((gameData.questionIndex + 1) / gameData.totalQuestions) * 100}%` }}
@@ -345,8 +345,8 @@ export default function PlayPage() {
             </div>
 
             {/* YouTube Player with Frosted Glass Effect */}
-            <div className="flex flex-col items-center justify-center py-8">
-                <div className="relative w-full max-w-md aspect-video rounded-2xl overflow-hidden bg-gray-900 shadow-2xl">
+            <div className="flex flex-col items-center justify-center py-2">
+                <div className="relative w-full max-w-sm aspect-video rounded-xl overflow-hidden bg-gray-900 shadow-xl">
                     {/* YouTube Player */}
                     <div id="youtube-player" className="absolute inset-0 w-full h-full" />
 
@@ -359,10 +359,10 @@ export default function PlayPage() {
                             /* iOS Safari 需要使用者點擊才能播放 */
                             <button
                                 onClick={handleStartPlaying}
-                                className="flex flex-col items-center justify-center p-6 rounded-2xl hover:bg-white/10 transition-colors"
+                                className="flex flex-col items-center justify-center p-4 rounded-xl hover:bg-white/10 transition-colors"
                             >
-                                <div className="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center mb-4 shadow-lg hover:bg-blue-600 transition-colors">
-                                    <svg className="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                <div className="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center mb-3 shadow-lg hover:bg-blue-600 transition-colors">
+                                    <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M8 5v14l11-7z" />
                                     </svg>
                                 </div>
@@ -370,8 +370,8 @@ export default function PlayPage() {
                             </button>
                         ) : (
                             <>
-                                <div className="text-6xl mb-2">🎵</div>
-                                <p className="text-gray-300 text-sm">仔細聽...</p>
+                                <div className="text-5xl mb-1">🎵</div>
+                                <p className="text-gray-300 text-xs">仔細聽...</p>
                             </>
                         )}
                     </div>
@@ -380,24 +380,24 @@ export default function PlayPage() {
                     {answerResult && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 animate-fadeIn">
                             {/* 結果圖示 */}
-                            <div className={`text-7xl mb-3 ${answerResult.isCorrect ? 'animate-bounce' : 'animate-shake'}`}>
+                            <div className={`text-5xl mb-2 ${answerResult.isCorrect ? 'animate-bounce' : 'animate-shake'}`}>
                                 {answerResult.isCorrect ? '🎉' : (isTimeout ? '⏰' : '😢')}
                             </div>
 
                             {/* 結果文字 */}
-                            <p className={`text-2xl font-bold mb-2 ${answerResult.isCorrect ? 'text-green-400' : 'text-red-400'}`}>
+                            <p className={`text-xl font-bold mb-1 ${answerResult.isCorrect ? 'text-green-400' : 'text-red-400'}`}>
                                 {answerResult.isCorrect ? '✓ 答對了！' : (isTimeout ? '時間到！' : '✗ 答錯了')}
                             </p>
 
                             {/* 正確答案 */}
-                            <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3 mt-2">
-                                <p className="text-gray-400 text-sm mb-1">正確答案</p>
-                                <p className="text-white text-xl font-bold">{answerResult.correctTitle}</p>
+                            <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 mt-1">
+                                <p className="text-gray-400 text-xs mb-0.5">正確答案</p>
+                                <p className="text-white text-lg font-bold">{answerResult.correctTitle}</p>
                             </div>
 
                             {/* 得分 */}
                             {answerResult.isCorrect && (
-                                <p className="text-yellow-400 text-lg mt-3 font-medium">
+                                <p className="text-yellow-400 text-base mt-2 font-medium">
                                     +{answerResult.scoreGained} 分
                                 </p>
                             )}
@@ -406,21 +406,21 @@ export default function PlayPage() {
                 </div>
 
                 {/* Timer */}
-                <div className={`text-5xl font-bold tabular-nums mt-6 ${timer.isUrgent ? 'timer-urgent' : 'text-white'}`}>
+                <div className={`text-4xl font-bold tabular-nums mt-3 ${timer.isUrgent ? 'timer-urgent' : 'text-white'}`}>
                     {timer.timeLeft}
                 </div>
-                <div className="text-gray-500">秒</div>
+                <div className="text-gray-500 text-sm">秒</div>
             </div>
 
             {/* Options */}
-            <div className="grid grid-cols-1 gap-3 mt-auto mb-8">
+            <div className="grid grid-cols-1 gap-2 mt-auto mb-4">
                 {gameData.options.map((option, index) => {
                     const isSelected = selectedIndex === index;
                     const isCorrect = answerResult?.correctIndex === index;
                     const showResult = answerResult !== null;
                     const isPending = isSelected && !showResult && isSubmitting;
 
-                    let buttonClass = 'option-button w-full py-4 px-6 rounded-xl border-2 text-left font-medium transition-all ';
+                    let buttonClass = 'option-button w-full py-3 px-4 rounded-lg border-2 text-left font-medium transition-all text-sm ';
 
                     if (showResult) {
                         // 顯示答案結果
@@ -449,7 +449,7 @@ export default function PlayPage() {
                             disabled={showResult || isSubmitting}
                             className={buttonClass}
                         >
-                            <span className="inline-block w-8 h-8 rounded-full bg-gray-700 text-center leading-8 mr-3 text-sm">
+                            <span className="inline-block w-6 h-6 rounded-full bg-gray-700 text-center leading-6 mr-2 text-xs">
                                 {['A', 'B', 'C', 'D'][index]}
                             </span>
                             {option}

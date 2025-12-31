@@ -42,6 +42,7 @@ export default function PlayPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isTimeout, setIsTimeout] = useState(false);
     const [showOverlay, setShowOverlay] = useState(true); // 獨立控制毛玻璃效果
+    const [needsUserInteraction, setNeedsUserInteraction] = useState(true); // iOS Safari 需要使用者互動才能播放
     const [error, setError] = useState<string | null>(null);
 
     // 用於防止重複提交的 ref
@@ -190,10 +191,18 @@ export default function PlayPage() {
         }, 500);
     }, [gameData, player, timer]);
 
-    // 當播放器準備好或 gameData 變化時，嘗試載入影片
+    // 當播放器準備好或 gameData 變化時，嘗試載入影片（僅在使用者已互動後）
     useEffect(() => {
+        if (!needsUserInteraction) {
+            loadAndPlayVideo();
+        }
+    }, [loadAndPlayVideo, player.isReady, needsUserInteraction]);
+
+    // 使用者點擊開始播放的處理函數
+    const handleStartPlaying = useCallback(() => {
+        setNeedsUserInteraction(false);
         loadAndPlayVideo();
-    }, [loadAndPlayVideo, player.isReady]);
+    }, [loadAndPlayVideo]);
 
     const submitAnswer = async (chosenIndex: number) => {
         // 防止重複提交
@@ -346,8 +355,25 @@ export default function PlayPage() {
                         className={`absolute inset-0 backdrop-blur-xl bg-black/40 flex flex-col items-center justify-center transition-all duration-300 ${showOverlay ? 'opacity-100' : 'opacity-0 pointer-events-none'
                             }`}
                     >
-                        <div className="text-6xl mb-2">🎵</div>
-                        <p className="text-gray-300 text-sm">仔細聽...</p>
+                        {needsUserInteraction ? (
+                            /* iOS Safari 需要使用者點擊才能播放 */
+                            <button
+                                onClick={handleStartPlaying}
+                                className="flex flex-col items-center justify-center p-6 rounded-2xl hover:bg-white/10 transition-colors"
+                            >
+                                <div className="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center mb-4 shadow-lg hover:bg-blue-600 transition-colors">
+                                    <svg className="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                </div>
+                                <p className="text-white text-lg font-medium">點擊開始播放</p>
+                            </button>
+                        ) : (
+                            <>
+                                <div className="text-6xl mb-2">🎵</div>
+                                <p className="text-gray-300 text-sm">仔細聽...</p>
+                            </>
+                        )}
                     </div>
 
                     {/* Answer overlay on video - 更明顯的顯示 */}

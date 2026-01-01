@@ -149,8 +149,19 @@ export default function Home() {
       </button>
 
       {/* Footer */}
-      <footer className="mt-12 text-gray-600 text-sm">
-        使用 YouTube 內嵌播放 • 不下載音檔
+      <footer className="mt-12 text-center">
+        <p className="text-gray-600 text-sm mb-2">
+          使用 YouTube 內嵌播放 • 不下載音檔
+        </p>
+        <div className="flex items-center justify-center gap-4 text-xs text-gray-500">
+          <a href="/terms" className="hover:text-gray-300 transition-colors">
+            使用說明
+          </a>
+          <span>•</span>
+          <a href="/privacy" className="hover:text-gray-300 transition-colors">
+            隱私政策
+          </a>
+        </div>
       </footer>
     </div>
   );
